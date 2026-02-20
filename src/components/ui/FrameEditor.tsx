@@ -104,7 +104,7 @@ export function FrameEditor({ frame }: FrameEditorProps) {
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0]
       if (!file) return
-      const imageId = crypto.randomUUID()
+      const imageId = self.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`
       await saveImage(imageId, file)
       updateFrame(frame.id, { imageId })
       e.target.value = ''

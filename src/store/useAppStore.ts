@@ -59,7 +59,7 @@ export const useAppStore = create<AppStore>()(
             const wall = state.wall
             const newFrame: Frame = {
               ...DEFAULT_FRAME,
-              id: crypto.randomUUID(),
+              id: self.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
               shape,
               x: (wall.width - DEFAULT_FRAME.width) / 2,
               y: (wall.height - DEFAULT_FRAME.height) / 2,
@@ -93,7 +93,7 @@ export const useAppStore = create<AppStore>()(
             if (!source) return
             const duplicate: Frame = {
               ...source,
-              id: crypto.randomUUID(),
+              id: self.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
               x: source.x + 2,
               y: source.y + 2,
             }
