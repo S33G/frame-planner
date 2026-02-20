@@ -2,8 +2,9 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   workflow_dispatch:
+
 
 permissions:
   contents: read
@@ -18,21 +19,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
 
-      - run: bun install --frozen-lockfile
+    - uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: latest
 
-      - run: bun run build
+    - run: bun install --frozen-lockfile
 
-      - uses: actions/configure-pages@v5
+    - run: bun run build
 
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
+    - uses: actions/configure-pages@v5
+
+    - uses: actions/upload-pages-artifact@v3
+      with:
+        path: dist
 
   deploy:
     needs: build
@@ -41,5 +48,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+    - id: deployment
+      uses: actions/deploy-pages@v4
